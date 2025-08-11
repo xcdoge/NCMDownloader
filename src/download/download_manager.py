@@ -65,7 +65,7 @@ class DownloadManager:
             tag_manager = TagManager(file_path, track_info['tags'])
             tag_manager.set_audio_tags()
         
-        print(f"[bold green]下载并处理{track_info['name']}成功![/bold green]")
+        print(f"[bold]下载并处理{track_info['name']}成功![/bold]")
         return True
     
     def download_cover(self, track_info, playlist_name):

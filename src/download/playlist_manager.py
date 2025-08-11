@@ -1,6 +1,7 @@
 from pyncm import apis
 from rich import print
 from .utils import Utils
+from rich import print
 import os
 
 class PlaylistManager:
@@ -26,7 +27,7 @@ class PlaylistManager:
             with open(self.utils.config['path']['playlist_file'], 'r', encoding='utf-8') as f:
                 return [line.strip() for line in f if line.strip()]
         except Exception as e:
-            print(f"读取文件时出错: {str(e)}")
+            print(f"[bold_red]读取文件时出错: {str(e)}[/bold red]")
             return []
 
     def get_playlist_info(self, playlist_id):
@@ -34,13 +35,13 @@ class PlaylistManager:
         try:
             playlist_id = int(playlist_id)
         except ValueError:
-            print(f" {playlist_id} 不是有效的歌单ID, 应为纯数字组合!")
+            print(f"[bold red] {playlist_id} 不是有效的歌单ID, 应为纯数字组合![/bold red]")
             return None
         
         res = apis.playlist.GetPlaylistInfo(playlist_id)
         
         if not res or res.get('code') != 200 or not res.get('playlist'):
-            print(f"获取歌单信息失败: {playlist_id}")
+            print(f"[bold red]获取歌单信息失败: {playlist_id}[/bold red]")
             return None
         
         song_ids = [track['id'] for track in res['playlist']['trackIds']]
@@ -65,6 +66,6 @@ class PlaylistManager:
             playlist = self.get_playlist_info(pid)
             if playlist:
                 playlists.append(playlist)
-                print(f"获取歌单信息: {playlist['name']} {len(playlist['song_ids'])} 首歌曲")
+                print(f"获取歌单信息: [bold]{playlist['name']} {len(playlist['song_ids'])}[/bold] 首歌曲")
         
         return playlists
