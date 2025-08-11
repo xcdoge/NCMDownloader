@@ -25,7 +25,7 @@ class PlaylistManager:
 
         try:
             with open(self.utils.config['path']['playlist_file'], 'r', encoding='utf-8') as f:
-                return [line.strip() for line in f if line.strip()]
+                return [line.strip() for line in f if line.strip() and not line.startswith('#')]
         except Exception as e:
             print(f"[bold_red]读取文件时出错: {str(e)}[/bold red]")
             return []

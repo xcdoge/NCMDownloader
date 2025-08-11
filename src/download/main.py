@@ -54,7 +54,7 @@ class NCMDownloader:
         print("[bold]网易云音乐歌单下载器使用说明[/bold]")
         print("=" * 50)
         print(f"1. 请编辑歌单文件: {self.utils.config['path']['playlist_file']}")
-        print("2. 每行添加一个网易云歌单ID（纯数字）")
+        print("2. 每行添加一个网易云歌单ID（纯数字，不要包含包括'#'在内的任何其它文字）")
         print("3. 以'#'开头的行被视为注释")
         print("4. 示例:")
         print("   # 我的收藏歌单")
