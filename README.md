@@ -1,6 +1,6 @@
 # NCMDownloader
 
-![Python](https://img.shields.io/badge/python-3.7+-blue.svg)
+![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![pyncm](https://img.shields.io/badge/powered%20by-pyncm-lightgrey.svg)
 
@@ -23,7 +23,7 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
 
 ### 前置要求
 
-- Python 3.7+
+- Python 3.11+
 - 网易云音乐账号（用于获取歌单ID）
 
 ### 安装步骤
