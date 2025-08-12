@@ -11,7 +11,7 @@ class TrackManager:
     def get_track_info(self, track_id):
         """获取歌曲详细信息"""
         # 获取歌曲详情
-        for attempt in range(self.utils.config['retry']['max_retries']):
+        for _ in range(self.utils.config['retry']['max_retries']):
             is_vip = False
             try:
                 detail_res = apis.track.GetTrackDetail(track_id)
@@ -25,7 +25,7 @@ class TrackManager:
                 time.sleep(self.utils.config['retry']['retry_delay'])
         
         # 获取歌曲音频信息
-        for attempt in range(self.utils.config['retry']['max_retries']):
+        for _ in range(self.utils.config['retry']['max_retries']):
             try:
                 if is_vip == False:
                     audio_res = apis.track.GetTrackAudio(track_id)
