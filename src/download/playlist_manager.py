@@ -1,7 +1,6 @@
 from pyncm import apis
 from rich import print
 from .utils import Utils
-from rich import print
 import os
 
 class PlaylistManager:
@@ -11,7 +10,7 @@ class PlaylistManager:
 
     def has_valid_playlists(self):
         """检查歌单文件中是否有有效ID"""
-        playlist_ids = self.playlist_manager.read_playlist_ids()
+        playlist_ids = self.read_playlist_ids()
         if not playlist_ids:
             print("\n[bold red]错误: 歌单文件中没有有效的歌单ID[/bold red]")
             return False

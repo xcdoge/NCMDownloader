@@ -1,12 +1,5 @@
-certifi==2025.8.3
-charset-normalizer==3.4.3
-idna==3.10
-markdown-it-py==3.0.0
-mdurl==0.1.2
 mutagen==1.47.0
-Pygments==2.19.2
 pyncm==1.7.1
 requests==2.32.4
 rich==14.1.0
 tqdm==4.67.1
-urllib3==2.5.0
