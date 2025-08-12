@@ -1,6 +1,6 @@
 from mutagen.flac import FLAC, Picture
-from mutagen.mp3 import MP3, EasyMP3
-from mutagen.id3 import ID3, APIC, TIT2, TPE1, TALB, TDRC
+from mutagen.mp3 import EasyMP3
+from mutagen.id3 import ID3, APIC
 from mutagen.mp4 import MP4, MP4Cover
 import os
 

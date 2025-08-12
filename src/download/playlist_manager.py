@@ -1,7 +1,6 @@
 from pyncm import apis
 from rich import print
 from .utils import Utils
-from rich import print
 import os
 
 class PlaylistManager:
