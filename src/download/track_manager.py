@@ -23,9 +23,6 @@ class TrackManager:
                 break
             except Exception:
                 time.sleep(self.utils.config['retry']['retry_delay'])
-            else:
-                print(f"[bold red]获取歌曲详情失败: {track_id} [/bold red]")
-                return None
         
         # 获取歌曲音频信息
         for attempt in range(self.utils.config['retry']['max_retries']):
@@ -39,9 +36,6 @@ class TrackManager:
                 break
             except Exception:
                 time.sleep(self.utils.config['retry']['retry_delay'])
-            else:
-                print(f"[bold red]获取音频信息失败: {track_id}[/bold red]")
-                return None
         
         song_detail = detail_res['songs'][0]
         
