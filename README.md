@@ -16,8 +16,8 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
 
 ## 技术栈
 
-- **核心库**: [pyncm](https://github.com/mos9527/pyncm) - 网易云音乐 Python 接口
-- **辅助API**: [落月 API](https://doc.vkeys.cn/api-doc) - 用于获取歌曲下载链接
+- **核心库**: [PyNCM](https://github.com/mos9527/pyncm) - 网易云音乐 Python 接口
+- **辅助API**: [落月API](https://doc.vkeys.cn/api-doc) - 用于获取歌曲下载链接
 
 ## 安装与使用
 

@@ -54,7 +54,7 @@ class DownloadManager:
         
         # 下载歌曲
         ext = self.get_file_extension(track_info['url'])
-        file_name = f"{track_info['name']}_{track_info['id']}.{ext}"
+        file_name = f"{track_info['name']} {track_info['id']}.{ext}"
         file_path = os.path.join(playlist_dir, file_name)
         
         if not self.download_file(track_info['url'], file_path):
@@ -88,3 +88,4 @@ class DownloadManager:
         file_path = os.path.join(cover_dir, file_name)
         
         return self.download_file(track_info['cover_url'], file_path)
+

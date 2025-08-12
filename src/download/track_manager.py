@@ -18,7 +18,7 @@ class TrackManager:
                 if detail_res.get('code') != 200 or not detail_res.get('songs'):
                     continue
                 if detail_res.get('songs')[0]['fee'] == 1:
-                    print(f" {track_id} 为vip歌曲, 使用落月api下载...")
+                    print(f"[bold] {track_id} 为vip歌曲, 使用落月api下载...[/bold]")
                     is_vip = True
                 break
             except Exception:
@@ -41,7 +41,7 @@ class TrackManager:
         
         # 处理艺术家信息
         artists = [ar['name'] for ar in song_detail.get('ar', [])]
-        artist_str = '、'.join(artists) if artists else '未知艺术家'
+        artist_str = '/'.join(artists) if artists else '未知艺术家'
         
         # 处理专辑封面
         cover_url = song_detail.get('al', {}).get('picUrl', '')
@@ -51,7 +51,14 @@ class TrackManager:
         year = time.strftime('%Y', time.localtime(publish_time/1000)) if publish_time else '未知年份'
         
         # 处理文件名
-        name = self.utils.sanitize_filename(song_detail.get('name', f'未知歌曲_{track_id}'))
+        name = self.utils.sanitize_filename(song_detail.get('name', '未知歌曲'))
+        if self.utils.config['track']['translated_name'] == True:
+            try:
+                translated_name = song_detail.get('tns')[0]
+            except (TypeError, IndexError):
+                pass
+            else:
+                name = self.utils.sanitize_filename(f"{name} ({translated_name})")
         album = self.utils.sanitize_filename(song_detail.get('al', {}).get('name', '未知专辑'))
         if is_vip == False:
             audio_info = audio_res['data'][0]

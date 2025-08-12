@@ -42,7 +42,7 @@ class NCMDownloader:
                 self.download_manager.download_track(track_info, playlist['name'])
                 
                 # 避免请求过于频繁
-                time.sleep(0.1)
+                time.sleep(self.utils.config['download']['request_delay'])
         
         print("\n[bold green]所有歌单处理完成![/bold green]")
     

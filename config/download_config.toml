@@ -13,3 +13,12 @@ referer = "https://music.163.com/"
 [retry]
 max_retries = 5
 retry_delay = 0.1
+
+# 下载相关配置
+[download]
+request_delay = 0.1 # 相邻两次请求间隔
+
+# 歌曲详情
+[track]
+translated_name = true # 是否在歌曲标题中添加译名
+

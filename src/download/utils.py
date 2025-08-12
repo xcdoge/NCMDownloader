@@ -50,7 +50,7 @@ class Utils:
     
     def sanitize_filename(self, filename):
         """清理文件名中的非法字符"""
-        valid_chars = "-_.() %s%s" % (chr(10), chr(13))
+        valid_chars = "-_.() %s%s/,，" % (chr(10), chr(13))
         return ''.join(c for c in filename if c.isalnum() or c in valid_chars).strip()
         
 
