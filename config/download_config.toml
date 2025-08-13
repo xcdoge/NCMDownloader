@@ -1,8 +1,9 @@
-# 配置文件路径相关（程序运行时会自动处理动态路径，此处为相对/默认值）
+# 配置文件路径相关(程序运行时会自动处理动态路径，此处为相对/默认值)
 [path]
 current_dir = "."
 download_dir = "./downloads"
 playlist_file = "playlists.txt"
+covers_dir = "./downloads/covers"
 
 # HTTP请求头配置
 [headers]
@@ -22,3 +23,9 @@ request_delay = 0.1 # 相邻两次请求间隔
 [track]
 translated_name = true # 是否在歌曲标题中添加译名
 
+# 歌词配置
+[lyric]
+enable = true # 是否下载歌词
+time_stamp = true # 是否保留时间戳
+translation = true # 是否下载翻译歌词
+romaji = false #是否下载罗马音歌词(默认关闭)
