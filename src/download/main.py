@@ -12,7 +12,7 @@ class NCMDownloader:
         self.track_manager = TrackManager()
         self.download_manager = DownloadManager()
         self.utils = Utils()
-    
+
     def run(self):
         """程序主流程"""
         # 检查歌单文件是否有有效内容
@@ -20,30 +20,30 @@ class NCMDownloader:
             self.utils.create_file(self.utils.config['path']['playlist_file'])
             self.show_usage_instructions()
             return
-        
+
         # 获取所有歌单
         playlists = self.playlist_manager.get_all_playlists()
         if not playlists:
             return
-        
+
         # 处理每个歌单
         for playlist in playlists:
             print(f"\n[bold]开始处理歌单: {playlist['name']}[/bold]")
-            
+
             # 处理歌单中的每首歌曲
             for track_id in tqdm(playlist['song_ids'], desc="下载进度"):
                 track_info = self.track_manager.get_track_info(track_id)
                 if not track_info:
                     print(f"跳过无法获取信息的歌曲: {track_id}")
                     continue
-                
+
                 # 下载封面和歌曲
                 self.download_manager.download_cover(track_info, playlist['name'])
                 self.download_manager.download_track(track_info, playlist['name'])
-                
+
                 # 避免请求过于频繁
                 time.sleep(self.utils.config['download']['request_delay'])
-        
+
         print("\n[bold green]所有歌单处理完成![/bold green]")
     
 

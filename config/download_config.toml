@@ -3,7 +3,7 @@
 current_dir = "."
 download_dir = "./downloads"
 playlist_file = "playlists.txt"
-covers_dir = "./downloads/covers"
+cover_dir = "./downloads/covers"
 
 # HTTP请求头配置
 [headers]

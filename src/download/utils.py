@@ -19,7 +19,7 @@ class Utils:
             except OSError as e:
                 print(f"创建目录 {path} 失败: {e}")
         return False
-    
+
     def create_file(self, file_path):
         """创建文件(如果不存在)"""
         if not os.path.exists(file_path):
@@ -31,7 +31,7 @@ class Utils:
             except OSError as e:
                 print(f"[bold red]创建文件 {file_path} 失败: {e}[/bold red]")
         return False
-    
+
     def fetch_api_data(self, url, is_json=True):
         """通用API请求函数"""
         for attempt in range(self.config['retry']['max_retries']):
@@ -41,18 +41,18 @@ class Utils:
                     return res.json() if is_json else res
             except (requests.RequestException, json.JSONDecodeError) as e:
                 print(f"请求{url}失败 ({attempt+1}/{self.config['retry']['max_retries']}): {e}")
-            
+
             if attempt < self.config['retry']['max_retries'] - 1:
                 time.sleep(self.config['retry']['retry_delay'] * (attempt + 1))
-        
+
         print(f"[bold red]重试{self.config['retry']['max_retries']}次后仍失败: {url}[/bold red]")
         return None
-    
+
     def sanitize_filename(self, filename):
         """清理文件名中的非法字符"""
         valid_chars = "-_.() %s%s/,，" % (chr(10), chr(13))
         return ''.join(c for c in filename if c.isalnum() or c in valid_chars).strip()
-        
+
 
     def _load_config(self):
         current_file_path = os.path.abspath(__file__)
