@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.11+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![pyncm](https://img.shields.io/badge/powered%20by-pyncm-lightgrey.svg)
+![PyNCM](https://img.shields.io/badge/powered%20by-pyncm-lightgrey.svg)
 
 NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载歌曲、专辑封面，并自动为音频文件添加完整的元数据标签。使用 Python 编写，简单易用，功能强大。
 
@@ -34,6 +34,14 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
    cd NCMDownloader
    ```
 2. （推荐）创建虚拟环境
+
+   **Windows**
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate
+   ```
+
+   **MacOS/Linux**
    ```bash
    python -m venv venv
    source venv/bin/activate
@@ -56,6 +64,14 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
 ### 使用方法
 
 激活虚拟环境，运行主程序：
+
+**Windows**
+```bash
+.\venv\Scripts\activate
+python main.py
+```
+
+**MacOS/Linux**
 ```bash
 source venv/bin/activate
 python main.py
