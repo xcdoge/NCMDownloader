@@ -13,7 +13,7 @@ referer = "https://music.163.com/"
 # 重试配置
 [retry]
 max_retries = 5
-retry_delay = 0.1
+delay = 0.1
 
 # 下载相关配置
 [download]

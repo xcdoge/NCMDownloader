@@ -22,7 +22,7 @@ class TrackManager:
                     is_vip = True
                 break
             except Exception:
-                time.sleep(self.utils.config['retry']['retry_delay'])
+                time.sleep(self.utils.config['retry']['delay'])
         
         # 获取歌曲音频信息
         for _ in range(self.utils.config['retry']['max_retries']):
@@ -34,8 +34,10 @@ class TrackManager:
                 if audio_res.get('code') != 200 or not audio_res.get('data'):
                     continue
                 break
-            except Exception:
-                time.sleep(self.utils.config['retry']['retry_delay'])
+            except Exception as e:
+                print(e)
+                self.get_track_audio(track_id)
+                time.sleep(self.utils.config['retry']['delay'])
         
         song_detail = detail_res['songs'][0]
         
