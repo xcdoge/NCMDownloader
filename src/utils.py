@@ -75,7 +75,7 @@ class Utils:
 
     def _load_config(self):
         current_file_path = os.path.abspath(__file__)
-        project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file_path)))
+        project_root = os.path.dirname(os.path.dirname(current_file_path))
         config_path = os.path.join(project_root, "config", "config.toml")
 
         try:
@@ -86,20 +86,3 @@ class Utils:
             raise FileNotFoundError(f"[bold red]配置文件未找到，请检查路径：{config_path}[/bold red]")
         except Exception as e:
             raise RuntimeError(f"[bold red]读取配置文件失败：{e}[/bold red]")
-
-        
-        
-        
-"""        for attempt in range(self.config['retry']['max_retries']):
-            try:
-                res = requests.get(url, headers=self.config['headers'], timeout=10)
-                if res.status_code == 200:
-                    return res.json() if is_json else res
-            except (requests.RequestException, json.JSONDecodeError) as e:
-                print(f"请求{url}失败 ({attempt+1}/{self.config['retry']['max_retries']}): {e}")
-
-            if attempt < self.config['retry']['max_retries'] - 1:
-                time.sleep(self.config['retry']['retry_delay'] * (attempt + 1))
-
-        print(f"[bold red]重试{self.config['retry']['max_retries']}次后仍失败: {url}[/bold red]")
-        return None"""

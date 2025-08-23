@@ -29,24 +29,30 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
 ### 安装步骤
 
 1. 克隆仓库：
+
    ```bash
    git clone https://github.com/yourusername/NCMDownloader.git
    cd NCMDownloader
    ```
+
 2. （推荐）创建虚拟环境
 
    **Windows**
+
    ```bash
    python -m venv venv
    .\venv\Scripts\activate
    ```
 
    **MacOS/Linux**
+
    ```bash
    python -m venv venv
    source venv/bin/activate
    ```
+
 3. 安装依赖：
+
    ```bash
    pip install -r requirements.txt
    ```
@@ -54,6 +60,7 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
 4. 配置歌单：
    - 首次运行会自动创建 `playlists.txt` 文件
    - 打开文件添加您的网易云歌单ID（每行一个）
+
    ```
    # 示例：
    123456789
@@ -66,31 +73,36 @@ NCMDownloader 是一个高效的网易云音乐歌单下载工具，支持下载
 激活虚拟环境，运行主程序：
 
 **Windows**
+
 ```bash
 .\venv\Scripts\activate
 python main.py
 ```
 
 **MacOS/Linux**
+
 ```bash
 source venv/bin/activate
 python main.py
 ```
 
 程序会自动：
+
 1. 读取 `playlists.txt` 中的歌单ID
+
 2. 下载所有歌单中的歌曲至目录 `songs/歌单名称/`
-3. 下载专辑封面至目录 `songs/歌单名称/covers/`
+3. 下载专辑封面至目录 `songs/covers/`
 4. 为音频文件添加元数据标签
 
 注：
-下载目录及更多详细配置可自行在 `config/download_config.toml` 中自行调整
+下载目录及更多详细配置可自行在 `config/config.toml` 中自行调整
 
 ### 获取歌单ID
 
 1. 打开网易云音乐网页版：https://music.163.com/
 2. 进入您的歌单页面
 3. 从URL中复制歌单ID：
+
    ```
    https://music.163.com/#/playlist?id=114514
    ```
@@ -114,6 +126,5 @@ python main.py
 本项目仅用于学习和研究目的，请勿用于商业用途。下载的音乐版权归原作者所有，请在下载后24小时内删除。使用本软件产生的一切后果由使用者承担。
 
 ---
-
 
 **快乐下载，享受音乐！** 🎧

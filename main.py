@@ -1,4 +1,4 @@
-from src.download.main import NCMDownloader
+from src.main import NCMDownloader
 
 if __name__ == "__main__":
     downloader = NCMDownloader()
