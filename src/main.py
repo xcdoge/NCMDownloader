@@ -15,19 +15,28 @@ class NCMDownloader:
 
     def run(self):
         """程序主流程"""
-        while true:
+        while True:
             self.show_info()
             choice =input("")
             try:
                 choice = int(choice)
-            except TypeError:
+            except Exception:
                 print("请输入正确的选项! ")
             else:
                 if choice == 1:
                     self.run_playlist()
+                elif choice == 2:
+                    self.run_track()
+                elif choice == 0:
+                    break
+
+        input("点击任意键退出...")
+
+
 
     def run_playlist(self):
         """下载歌单歌曲主流程"""
+        failed_playlists = []
         # 检查歌单文件是否有有效内容
         if not self.playlist_manager.read_playlist_ids():
             self.utils.create_file(self.utils.config['path']['playlist_file'])
@@ -48,6 +57,7 @@ class NCMDownloader:
                 track_info = self.track_manager.get_track_info(track_id)
                 if not track_info:
                     print(f"跳过无法获取信息的歌曲: {track_id}")
+                    failed_playlists.append(track_id)
                     continue
 
                 # 下载封面和歌曲

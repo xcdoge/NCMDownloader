@@ -46,10 +46,10 @@ class Utils:
                         return result
                     except Exception as e:
                         if attempt == mr - 1:
-                            print(f"[bold red] {em}（错误：{str(e)}）[/bold red]")
+                            print(f"[bold red] {em} (错误：{str(e)}) [/bold red]")
                             return None
                         # 否则重试
-                        print(f"[yellow] {em}，重试中...（剩余{mr - attempt - 1}次）[/yellow]")
+                        print(f"[yellow] {em}, 重试中... [/yellow]")
                         time.sleep(de)
             return wrapper
         return decorator
