@@ -28,7 +28,6 @@ class DownloadManager:
             return False
 
         try:
-            self.utils.create_file(file_path)
             with open(file_path, 'wb') as f:
                 for chunk in res.iter_content(chunk_size=8192):
                     if chunk:

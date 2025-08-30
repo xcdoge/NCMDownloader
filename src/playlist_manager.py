@@ -1,33 +1,14 @@
 from pyncm import apis
 from rich import print
 from .utils import Utils
+from .id_list_manager import IdListManager
 import os
 
 class PlaylistManager:
     def __init__(self):
         self.utils = Utils()
+        self.ilm = IdListManager("playlist")
         apis.login.LoginViaAnonymousAccount()
-
-    def has_valid_playlists(self):
-        """检查歌单文件中是否有有效ID"""
-        playlist_ids = self.read_playlist_ids()
-        if not playlist_ids:
-            print("\n[bold red]错误: 歌单文件中没有有效的歌单ID[/bold red]")
-            return False
-        return True
-
-    def read_playlist_ids(self):
-        """获取歌单ID列表"""
-        if not os.path.exists(self.utils.config['path']['playlist_file']):
-            print(f"[bold red]错误: 文件不存在 - {self.utils.config['path']['playlist_file']}[/bold red]")
-            return []
-
-        try:
-            with open(self.utils.config['path']['playlist_file'], 'r', encoding='utf-8') as f:
-                return [line.strip() for line in f if line.strip() and not line.startswith('#')]
-        except Exception as e:
-            print(f"[bold_red]读取文件时出错: {str(e)}[/bold red]")
-            return []
 
     def get_playlist_info(self, playlist_id):
         """获取单个歌单相关信息"""
@@ -54,7 +35,7 @@ class PlaylistManager:
 
     def get_all_playlists(self):
         """获取所有歌单信息"""
-        playlist_ids = self.read_playlist_ids()
+        playlist_ids = self.ilm.read_ids()
         if not playlist_ids:
             print("[bold red]未找到有效的歌单ID[/bold red]")
             return []

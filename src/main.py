@@ -2,6 +2,7 @@ from .playlist_manager import PlaylistManager
 from .track_manager import TrackManager
 from .download_manager import DownloadManager
 from .lyric_manager import LyricManager
+from .id_list_manager import IdListManager
 from .utils import Utils
 from tqdm import tqdm
 import time
@@ -36,9 +37,10 @@ class NCMDownloader:
 
     def run_playlist(self):
         """下载歌单歌曲主流程"""
+        self.ilm = IdListManager("playlist")
         failed_playlists = []
         # 检查歌单文件是否有有效内容
-        if not self.pm.read_playlist_ids():
+        if not self.ilm.read_ids():
             self.utils.create_file(self.utils.config['path']['playlist_file'])
             self.show_usage_instructions()
             return
