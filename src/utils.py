@@ -33,6 +33,12 @@ class Utils:
                 print(f"[bold red]创建文件 {file_path} 失败: {e}[/bold red]")
         return False
 
+    def write_file(self, file_path, content):
+        """写入文件"""
+        self.create_file(file_path)
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+
     def retry(max_retries, delay, error_msg="操作失败"):
         def decorator(func):
             @wraps(func)
@@ -69,7 +75,7 @@ class Utils:
 
     def sanitize_filename(self, filename):
         """清理文件名中的非法字符"""
-        valid_chars = "-_.() %s%s/,，" % (chr(10), chr(13))
+        valid_chars = "-_.() %s%s,，：:" % (chr(10), chr(13))
         return ''.join(c for c in filename if c.isalnum() or c in valid_chars).strip()
 
 

@@ -1,17 +1,19 @@
 from mutagen.flac import FLAC, Picture
 from mutagen.mp3 import EasyMP3
-from mutagen.id3 import ID3, APIC
+from mutagen.id3 import ID3, APIC, USLT
 from mutagen.mp4 import MP4, MP4Cover
+from .utils import Utils
 import os
 
 class TagManager:
     def __init__(self, file_path, tags):
+        self.utils = Utils()
         self.file_path = file_path
         self.tags = tags
 
     def _get_cover_path(self):
         """获取有效的封面路径（优先查找jpg、jpeg、png格式）"""
-        cover_dir = os.path.join(os.path.dirname(self.file_path), 'covers')
+        cover_dir = self.utils.config['path']['cover_dir']
         album_name = self.tags.get('album')
         if not album_name or not os.path.exists(cover_dir):
             return None
@@ -49,7 +51,7 @@ class TagManager:
                 raise ValueError(f"不支持的文件格式: {ext}")
             return True
         except Exception as e:
-            print(f"✗ 处理失败 {os.path.basename(self.file_path)}: {str(e)}")
+            print(f"处理失败 {os.path.basename(self.file_path)}: {str(e)}")
             return False
 
     def _set_mp3_tags(self):
@@ -90,7 +92,12 @@ class TagManager:
                 desc='Cover',
                 data=f.read()
             )
-        audio.save(v2_version=3)  # 兼容更多播放器
+        audio.add(USLT(
+        encoding=3,
+        desc='',
+        text=self.tags['lyric']
+        ))
+        audio.save(v2_version=3) # 兼容更多播放器
 
     def _set_m4a_tags(self):
         audio = MP4(self.file_path)
@@ -103,7 +110,8 @@ class TagManager:
             'date': '\xa9day',
             'genre': '\xa9gen',
             'tracknumber': 'trkn',
-            'comment': '\xa9cmt'
+            'comment': '\xa9cmt',
+            'lyric': '\xa9lyr'
         }
 
         # 特殊处理轨道号
@@ -141,7 +149,7 @@ class TagManager:
         audio = FLAC(self.file_path)
 
         # 文本标签
-        for tag in ['title', 'artist', 'album', 'date', 'genre', 'comment']:
+        for tag in ['title', 'artist', 'album', 'date', 'genre', 'comment', 'lyric']:
             if tag in self.tags:
                 audio[tag] = self.tags[tag]
 

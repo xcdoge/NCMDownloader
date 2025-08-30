@@ -3,3 +3,4 @@ downloads/
 *.bak
 playlists.txt
 ncmd/
+venv/
