@@ -2,5 +2,7 @@ __pycache__/
 downloads/
 *.bak
 playlists.txt
+albums.txt
+tracks.txt
 ncmd/
 venv/

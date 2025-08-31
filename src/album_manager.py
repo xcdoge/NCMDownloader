@@ -7,9 +7,10 @@ import os
 class AlbumManager:
     def __init__(self):
         self.utils = Utils()
+        self.ilm = IdListManager("album")
         apis.login.LoginViaAnonymousAccount()
 
-def get_album_info(self, album_id):
+    def get_album_info(self, album_id):
         """获取单个专辑相关信息"""
         try:
             album_id = int(album_id)
@@ -23,7 +24,7 @@ def get_album_info(self, album_id):
             print(f"[bold red]获取专辑信息失败: {album_id}[/bold red]")
             return None
 
-        song_ids = [track['id'] for track in res['album']['trackIds']]
+        song_ids = [_['id'] for _ in res['songs']]
         album_name = self.utils.sanitize_filename(res['album']['name'])
 
         return {

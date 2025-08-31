@@ -37,25 +37,20 @@ class DownloadManager:
             print(f"[bold red]下载失败: {file_path} - {e}[/bold red]")
             return False
 
-    def download_track(self, track_info, playlist_name):
+    def download_track(self, track_info, list_name, file_type):
         """下载单首歌曲"""
         if not track_info or not track_info.get('url'):
             print(f"[bold red]无有效歌曲URL: {track_info.get('name') if track_info else '未知歌曲'}[/bold red]")
             return False
 
         # 创建歌单目录
-        playlist_dir = os.path.join(self.utils.config['path']['download_dir'], playlist_name)
-        if self.utils.create_directory(playlist_dir):
-            return False
-
-        # 创建封面目录
-        cover_dir = self.utils.config['path']['cover_dir']
-        self.utils.create_directory(cover_dir)
+        list_dir = os.path.join(self.utils.config['path']['download_dir'], file_type, list_name)
+        self.utils.create_directory(list_dir)
 
         # 下载歌曲
         ext = self.get_file_extension(track_info['url'])
         file_name = f"{track_info['name']} {track_info['id']}.{ext}"
-        file_path = os.path.join(playlist_dir, file_name)
+        file_path = os.path.join(list_dir, file_name)
 
         if not self.download_file(track_info['url'], file_path):
             return False
@@ -64,17 +59,16 @@ class DownloadManager:
             tag_manager = TagManager(file_path, track_info['tags'])
             tag_manager.set_audio_tags()
 
-        print(f"[bold]下载并处理{track_info['name']}成功![/bold]")
+        # print(f"[bold]下载并处理{track_info['name']}成功![/bold]")
         return True
 
-    def download_cover(self, track_info, playlist_name):
+    def download_cover(self, track_info):
         """下载歌曲封面"""
         if not track_info or not track_info.get('cover_url'):
             print(f"[bold red]无有效封面URL: {track_info.get('name') if track_info else '未知歌曲'}[/bold red]")
             return False
 
-        # 创建歌单目录
-        playlist_dir = os.path.join(self.utils.config['path']['download_dir'], playlist_name)
+        # 创建封面目录
         cover_dir = self.utils.config['path']['cover_dir']
         if self.utils.create_directory(cover_dir):
             return False
