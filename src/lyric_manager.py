@@ -34,7 +34,7 @@ class LyricManager:
         except KeyError:
             romaji = ""
         if self.config['translation'] == True and translation:
-            lrc = lrc + "\n" + translation
+            lrc += "\n" + translation
         if self.config['romaji'] == True:
-            lrc = lrc + "\n" + romaji
+            lrc += "\n" + romaji
         return lrc

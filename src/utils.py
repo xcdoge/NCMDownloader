@@ -39,39 +39,9 @@ class Utils:
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
-    def retry(max_retries, delay, error_msg="操作失败"):
-        def decorator(func):
-            @wraps(func)
-            def wrapper(self, *args, **kwargs):
-                mr = max_retries(self) if callable(max_retries) else max_retries
-                de = delay(self) if callable(delay) else delay
-                em = error_msg(self, args, kwargs) if callable(error_msg) else error_msg
-                for attempt in range(mr):
-                    try:
-                        result = func(self, *args, **kwargs) # 执行原函数
-                        return result
-                    except Exception as e:
-                        if attempt == mr - 1:
-                            print(f"[bold red] {em} (错误：{str(e)}) [/bold red]")
-                            return None
-                        # 否则重试
-                        print(f"[yellow] {em}, 重试中... [/yellow]")
-                        time.sleep(de)
-            return wrapper
-        return decorator
-
-
-    @retry(
-    max_retries=lambda self: self.config['retry']['max_retries'],  # 用lambda延迟获取self
-    delay=lambda self: self.config['retry']['delay'],
-    error_msg=lambda self, args, kwargs: f'请求{args[0]}失败'
-    )
     def fetch_api_data(self, url, is_json=True):
-        """通用API请求函数"""
-        res = requests.get(url, headers=self.config['headers'], timeout=10)
-        if res.status_code == 200:
-            return res.json() if is_json else res
-
+        """通用API访问函数(无重试机制)"""
+        return requests.get(url, headers=self.config['headers'], timeout=10)
 
     def sanitize_filename(self, filename):
         """清理文件名中的非法字符"""

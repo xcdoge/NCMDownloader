@@ -44,7 +44,7 @@ class DownloadManager:
             return False
 
         # 创建歌单目录
-        list_dir = os.path.join(self.utils.config['path']['download_dir'], file_type, list_name)
+        list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s", list_name)
         self.utils.create_directory(list_dir)
 
         # 下载歌曲
@@ -59,7 +59,6 @@ class DownloadManager:
             tag_manager = TagManager(file_path, track_info['tags'])
             tag_manager.set_audio_tags()
 
-        # print(f"[bold]下载并处理{track_info['name']}成功![/bold]")
         return True
 
     def download_cover(self, track_info):

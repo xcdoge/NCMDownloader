@@ -82,7 +82,6 @@ class NCMDownloader:
     def run_track(self):
         """下载单首歌曲主流程"""
 
-
     def show_info(self):
         """显示循环文本"""
         print("\n" + "=" * 50)
