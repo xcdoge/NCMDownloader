@@ -19,7 +19,11 @@ class TrackManager:
         if detail_res.get('songs')[0]['fee'] == 1:
             print(f"[bold] {track_id} 为vip歌曲, 使用落月api下载...[/bold]")
             audio_res = self._get_vip_track_audio(track_id)
-            audio_info = audio_res['data']
+            try:
+                audio_info = audio_res['data']
+            except TypeError:
+                print(f"[bold red]获取 {track_id} 信息失败! [/bold red]")
+                raise ConnectionError
 
         else:
             audio_res = self._get_track_audio(track_id)

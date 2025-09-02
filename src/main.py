@@ -61,9 +61,9 @@ class NCMDownloader:
 
             # 处理列表中的每首歌曲
             for track_id in tqdm(list['song_ids'], desc="下载进度"):
-                track_info = self.tm.get_track_info(track_id)
-                if not track_info:
-                    print(f"跳过无法获取信息的歌曲: {track_id}")
+                try:
+                    track_info = self.tm.get_track_info(track_id)
+                except ConnectionError:
                     failed.append(track_id)
                     continue
 
