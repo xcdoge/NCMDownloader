@@ -33,8 +33,8 @@ class AlbumManager:
             'song_ids': song_ids
         }
 
-    def get_all_albums(self):
-        """获取所有专辑信息"""
+    def get_album_list(self):
+        """获取专辑列表"""
         album_ids = self.ilm.read_ids()
         if not album_ids:
             print("[bold red]未找到有效的专辑ID[/bold red]")

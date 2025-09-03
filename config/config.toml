@@ -2,9 +2,10 @@
 [path]
 current_dir = "."
 download_dir = "./downloads"
+cover_dir = "./downloads/covers"
 playlist_file = "playlists.txt"
 album_file = "albums.txt"
-cover_dir = "./downloads/covers"
+track_file = "tracks.txt"
 
 # HTTP请求头配置
 [headers]

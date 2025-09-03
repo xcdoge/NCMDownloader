@@ -33,8 +33,8 @@ class PlaylistManager:
             'song_ids': song_ids
         }
 
-    def get_all_playlists(self):
-        """获取所有歌单信息"""
+    def get_playlist_list(self):
+        """获取歌单列表"""
         playlist_ids = self.ilm.read_ids()
         if not playlist_ids:
             print("[bold red]未找到有效的歌单ID[/bold red]")

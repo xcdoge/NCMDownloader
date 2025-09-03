@@ -43,8 +43,11 @@ class DownloadManager:
             print(f"[bold red]无有效歌曲URL: {track_info.get('name') if track_info else '未知歌曲'}[/bold red]")
             return False
 
-        # 创建歌单目录
-        list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s", list_name)
+        # 创建目录
+        if list_name:
+            list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s", list_name)
+        else:
+            list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s")
         self.utils.create_directory(list_dir)
 
         # 下载歌曲

@@ -22,7 +22,7 @@ class NCMDownloader:
         """程序主流程"""
         while True:
             self.show_info()
-            choice =input("")
+            choice =input()
             try:
                 choice = int(choice)
             except Exception:
@@ -49,43 +49,78 @@ class NCMDownloader:
 
         # 获取所有歌单或专辑
         if file_type == "playlist":
-            lists = self.pm.get_all_playlists()
+            lists = self.pm.get_playlist_list()
         elif file_type == "album":
-            lists = self.am.get_all_albums()
+            lists = self.am.get_album_list()
+        elif file_type == "track":
+            lists = self.tm.get_track_list()
+            tracks = lists['tracks']
+            failed = lists['failed']
         if not lists:
             return
 
-        # 处理每个列表
-        for list in lists:
-            print(f"\n[bold]开始处理: {list['name']}[/bold]")
+        if file_type == "track":
+            print("\n[bold]开始处理...[/bold]")
+            for track_info in tracks:
+                self.dm.download_cover(track_info)
+                self.dm.download_track(track_info, "", file_type)
 
-            # 处理列表中的每首歌曲
-            for track_id in tqdm(list['song_ids'], desc="下载进度"):
-                try:
-                    track_info = self.tm.get_track_info(track_id)
-                except ConnectionError:
-                    failed.append(track_id)
-                    continue
+        else:
+            # 处理每个列表
+            for list in lists:
+                print(f"\n[bold]开始处理: {list['name']}[/bold]")
 
-                # 下载封面和歌曲
-                if file_type == "album" and track_id != list['song_ids'][0]:
-                    pass
-                else:
-                    self.dm.download_cover(track_info)
-                self.dm.download_track(track_info, list['name'], file_type)
+                # 处理列表中的每首歌曲
+                for track_id in tqdm(list['song_ids'], desc="下载进度"):
+                    try:
+                        track_info = self.tm.get_track_info(track_id)
+                    except ConnectionError:
+                        failed.append(track_id)
+                        continue
 
-                # 避免请求过于频繁
-                time.sleep(self.utils.config['download']['request_delay'])
+                    # 下载封面和歌曲
+                    if file_type == "album" and track_id != list['song_ids'][0]:
+                        pass
+                    else:
+                        self.dm.download_cover(track_info)
+                    self.dm.download_track(track_info, list['name'], file_type)
+
+                    # 避免请求过于频繁
+                    time.sleep(self.utils.config['download']['request_delay'])
 
         print("\n[bold green]全部处理完成![/bold green]")
 
     def run_track(self):
         """下载单首歌曲主流程"""
+        print("\n" + "=" * 50)
+        print("请选择下载方式: ")
+        print("1. 搜索下载")
+        print("2. 文件下载")
+        print("=" * 50)
+        choice =input()
+        try:
+            choice = int(choice)
+        except Exception:
+            pass
+        else:
+            if choice == 1:
+                detail_res = self.tm.search_track()
+                if detail_res:
+                    track_id = detail_res['songs'][0]['id']
+                    try:
+                        track_info = self.tm.get_track_info(track_id, detail_res)
+                    except ConnectionError:
+                        return
+                    self.dm.download_cover(track_info)
+                    self.dm.download_track(track_info, "", "track")
+
+            elif choice == 2:
+                self.run_list("track")
 
     def show_info(self):
         """显示循环文本"""
         print("\n" + "=" * 50)
-        print("[bold]欢迎使用NCMdownloader! [/bold]")
+        print("[bold]欢迎使用NCMDownloader! [/bold]")
         print("请选择下载方式: ")
         print("1. 歌单歌曲下载")
         print("2. 专辑歌曲下载")

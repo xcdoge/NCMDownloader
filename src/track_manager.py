@@ -2,18 +2,21 @@ from pyncm import apis
 import time
 from .utils import Utils
 from .lyric_manager import LyricManager
+from .id_list_manager import IdListManager
 from rich import print
 
 class TrackManager:
     def __init__(self):
         self.utils = Utils()
         self.lm = LyricManager()
+        self.ilm = IdListManager("track")
         apis.login.LoginViaAnonymousAccount()
 
-    def get_track_info(self, track_id):
+    def get_track_info(self, track_id, detail_res={}):
         """获取歌曲详细信息"""
         # 获取歌曲详情
-        detail_res = self._get_track_detail(track_id)
+        if not detail_res:
+            detail_res = self._get_track_detail(track_id)
 
         # 判断是否为VIP歌曲并获取歌曲音频信息
         if detail_res.get('songs')[0]['fee'] == 1:
@@ -45,6 +48,64 @@ class TrackManager:
             'cover_url': cover_url,
             'tags': tags
         }
+
+    def get_track_list(self):
+        """获取歌曲列表"""
+        track_ids = self.ilm.read_ids()
+        if not track_ids:
+            print("[bold red]未找到有效的歌曲ID[/bold red]")
+            return []
+
+        tracks, failed = [], []
+
+        for tid in track_ids:
+            try:
+                track = self.get_track_info(tid)
+            except ConnectionError:
+                failed.append(track)
+            if track:
+                tracks.append(track)
+            print(f"获取信息: [bold]{len(tracks)}[/bold] 首歌曲")
+
+        return {
+        'tracks': tracks,
+        'failed': failed
+        }
+
+    def search_track(self):
+        """搜索歌曲并返回歌曲信息"""
+        keyword = input("搜索歌曲或歌手名称:\n")
+        results = apis.cloudsearch.GetSearchResult(keyword, limit=10)['result']['songs']
+        print("\n" + "=" * 50)
+        for result in results:
+            order = results.index(result) + 1
+            if result.get('tns'):
+                name_str = f"{result.get('name', "未知歌曲")} ({result.get('tns')[0]})"
+            else:
+                name_str = result.get('name', "未知歌曲")
+            artists = [ar['name'] for ar in result.get('ar', [])]
+            artist_str = '/'.join(artists) if artists else '未知艺术家'
+            info = f"{order}. {name_str} - {artist_str}"
+            print(info)
+        print("0. 退出搜索")
+        print("=" * 50)
+        print("\n请选择:")
+        while True:
+            choice = input()
+            try:
+                choice = int(choice)
+            except Exception:
+                print("[red]请输入正确的数字! [/red]")
+            else:
+                if choice <= 10 and choice >= 1:
+                    res = results[choice - 1]
+                    return {
+                    'songs': [res]
+                    }
+                elif choice == 0:
+                    return
+                else:
+                    print("[red]请输入正确的数字! [/red]")
 
     def _process_track_tags(self, song_detail, track_id):
         """处理歌曲标签"""
