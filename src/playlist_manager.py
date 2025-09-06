@@ -49,3 +49,14 @@ class PlaylistManager:
                 print(f"获取歌单信息: [bold]{playlist['name']} {len(playlist['song_ids'])}[/bold] 首歌曲")
 
         return playlists
+
+    def get_user_playlists(self, user_id):
+        """获取用户歌单"""
+        res = apis.user.GetUserPlaylists(user_id)
+        playlists_info = []
+        for playlist in res.get("playlist"):
+            playlist_info = {}
+            playlist_info["name"] = playlist["name"]
+            playlist_info["id"] = playlist["id"]
+            playlists_info.append(playlist_info)
+        return playlists_info

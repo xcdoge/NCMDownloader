@@ -12,14 +12,14 @@ class TrackManager:
         self.ilm = IdListManager("track")
         apis.login.LoginViaAnonymousAccount()
 
-    def get_track_info(self, track_id, detail_res={}):
+    def get_track_info(self, track_id, enable_api, detail_res={}):
         """获取歌曲详细信息"""
         # 获取歌曲详情
         if not detail_res:
             detail_res = self._get_track_detail(track_id)
 
         # 判断是否为VIP歌曲并获取歌曲音频信息
-        if detail_res.get('songs')[0]['fee'] == 1:
+        if detail_res.get('songs')[0]['fee'] == 1 and enable_api:
             print(f"[bold] {track_id} 为vip歌曲, 使用落月api下载...[/bold]")
             audio_res = self._get_vip_track_audio(track_id)
             try:
@@ -27,6 +27,10 @@ class TrackManager:
             except TypeError:
                 print(f"[bold red]获取 {track_id} 信息失败! [/bold red]")
                 raise ConnectionError
+
+        elif detail_res.get('songs')[0]['fee'] == 1 and not enable_api:
+            print(f"[bold] {track_id} 为vip歌曲, 跳过下载...[/bold]")
+            return {}
 
         else:
             audio_res = self._get_track_audio(track_id)
@@ -75,7 +79,7 @@ class TrackManager:
     def search_track(self):
         """搜索歌曲并返回歌曲信息"""
         keyword = input("搜索歌曲或歌手名称:\n")
-        results = apis.cloudsearch.GetSearchResult(keyword, limit=10)['result']['songs']
+        results = apis.cloudsearch.GetSearchResult(keyword, limit=self.utils.config['search']['limit'])['result']['songs']
         print("\n" + "=" * 50)
         for result in results:
             order = results.index(result) + 1
@@ -95,9 +99,9 @@ class TrackManager:
             try:
                 choice = int(choice)
             except Exception:
-                print("[red]请输入正确的数字! [/red]")
+                print("[bold]请输入正确的数字! [/bold]")
             else:
-                if choice <= 10 and choice >= 1:
+                if choice <= self.utils.config['search']['limit'] and choice >= 1:
                     res = results[choice - 1]
                     return {
                     'songs': [res]
@@ -105,7 +109,7 @@ class TrackManager:
                 elif choice == 0:
                     return
                 else:
-                    print("[red]请输入正确的数字! [/red]")
+                    print("[bold]请输入正确的数字! [/bold]")
 
     def _process_track_tags(self, song_detail, track_id):
         """处理歌曲标签"""
@@ -164,8 +168,10 @@ class TrackManager:
         for _ in range(self.utils.config['retry']['max_retries']):
             try:
                 audio_res = self.utils.fetch_api_data(url)
-                if audio_res.get('code') != 200 or not audio_res.get('data'):
+                # print(audio_res.json())
+                if audio_res.json().get('code') != 200 or not audio_res.json().get('data'):
+                    time.sleep(self.utils.config['retry']['delay'])
                     continue
-                return audio_res
+                return audio_res.json()
             except Exception:
                 time.sleep(self.utils.config['retry']['delay'])

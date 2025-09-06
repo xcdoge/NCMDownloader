@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import json
 import requests
@@ -48,6 +49,24 @@ class Utils:
         valid_chars = "-_.() %s%s,，：:" % (chr(10), chr(13))
         return ''.join(c for c in filename if c.isalnum() or c in valid_chars).strip()
 
+    def exract_dir_ids(self, folder_path):
+        """读取文件夹中已下载歌曲的ID并返回列表"""
+        audio_ids = []
+        # 支持的音频文件扩展名
+        audio_extensions = {'.mp3', '.flac', '.m4a'}
+        
+        # 遍历文件夹中的所有文件
+        for filename in os.listdir(folder_path):
+            # 检查是否为音频文件
+            if any(filename.lower().endswith(ext) for ext in audio_extensions):
+                # 使用正则表达式匹配文件名格式
+                match = re.match(r'^.*? (\w+)\.\w+$', filename)
+                if match:
+                    audio_id = match.group(1)
+                    audio_ids.append(audio_id)
+                else:
+                    print(f"警告: 文件名 '{filename}' 不符合预期格式")
+        return audio_ids
 
     def _load_config(self):
         current_file_path = os.path.abspath(__file__)
