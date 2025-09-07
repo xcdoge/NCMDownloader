@@ -87,13 +87,14 @@ class NCMDownloader:
                 list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s", list['name'])
                 dir_not_exist = self.utils.create_directory(list_dir)
                 filter_exist_tracks = self.filter_exist_tracks(list_dir, list['song_ids'], dir_not_exist)
+                original_list = list['song_ids'][:]
                 list['song_ids'] = filter_exist_tracks['filtered_list']
                 exist_len = filter_exist_tracks['exist_len']
 
                 # 处理列表中的每首歌曲
-                digits = len(str(len(list['song_ids'])))
+                digits = len(str(len(original_list)))
                 for track_id in tqdm(list['song_ids'], desc="下载进度"):
-                    index = list['song_ids'].index(track_id) + exist_len + 1
+                    index = original_list.index(track_id) + 1
                     index = str(index).zfill(digits)
                     try:
                         track_info = self.tm.get_track_info(track_id, enable_api)
@@ -115,6 +116,8 @@ class NCMDownloader:
                     # 避免请求过于频繁
                     time.sleep(self.utils.config['download']['request_delay'])
 
+        if failed:
+            print(f"[bold]共 {len(failed)} 首歌曲未下载成功")
         print("\n[bold green]全部处理完成![/bold green]")
 
     def run_playlist(self):
