@@ -37,7 +37,7 @@ class DownloadManager:
             print(f"[bold red]下载失败: {file_path} - {e}[/bold red]")
             return False
 
-    def download_track(self, track_info, list_name, file_type):
+    def download_track(self, track_info, list_name, file_type, index=""):
         """下载单首歌曲"""
         if not track_info or not track_info.get('url'):
             print(f"[bold red]无有效歌曲URL: {track_info.get('name') if track_info else '未知歌曲'}[/bold red]")
@@ -52,7 +52,10 @@ class DownloadManager:
 
         # 下载歌曲
         ext = self.get_file_extension(track_info['url'])
-        file_name = f"{track_info['name']} {track_info['id']}.{ext}"
+        if index:
+            file_name = f"{index}. {track_info['name']} {track_info['id']}.{ext}"
+        else:
+            file_name = f"{track_info['name']} {track_info['id']}.{ext}"
         file_path = os.path.join(list_dir, file_name)
 
         if not self.download_file(track_info['url'], file_path):

@@ -68,6 +68,15 @@ class Utils:
                     print(f"警告: 文件名 '{filename}' 不符合预期格式")
         return audio_ids
 
+    def fill_zero(self, song_list):
+        """在文件名中自动补0"""
+        digits = len(str(len(song_list)))
+
+        for index, song in enumerate(song_list):
+            # 使用zfill补零，索引从1开始计数
+            padded_index = str(index + 1).zfill(digits)
+            print(padded_index)
+
     def _load_config(self):
         current_file_path = os.path.abspath(__file__)
         project_root = os.path.dirname(os.path.dirname(current_file_path))

@@ -86,10 +86,15 @@ class NCMDownloader:
                 # 创建目录
                 list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s", list['name'])
                 dir_not_exist = self.utils.create_directory(list_dir)
-                list['song_ids'] = self.filter_exist_tracks(list_dir, list['song_ids'], dir_not_exist)
+                filter_exist_tracks = self.filter_exist_tracks(list_dir, list['song_ids'], dir_not_exist)
+                list['song_ids'] = filter_exist_tracks['filtered_list']
+                exist_len = filter_exist_tracks['exist_len']
 
                 # 处理列表中的每首歌曲
+                digits = len(str(len(list['song_ids'])))
                 for track_id in tqdm(list['song_ids'], desc="下载进度"):
+                    index = list['song_ids'].index(track_id) + exist_len + 1
+                    index = str(index).zfill(digits)
                     try:
                         track_info = self.tm.get_track_info(track_id, enable_api)
                     except (ConnectionError, TypeError):
@@ -105,7 +110,7 @@ class NCMDownloader:
                         pass
                     else:
                         self.dm.download_cover(track_info)
-                    self.dm.download_track(track_info, list['name'], file_type)
+                    self.dm.download_track(track_info, list['name'], file_type, index)
 
                     # 避免请求过于频繁
                     time.sleep(self.utils.config['download']['request_delay'])
@@ -136,8 +141,8 @@ class NCMDownloader:
                     playlists_info = self.pm.get_user_playlists(user_id)
                     print("\n" + "=" * 50)
                     for pinfo in playlists_info:
-                        order = playlists_info.index(pinfo) + 1
-                        info = f"{order}. {pinfo.get("name")}"
+                        index = playlists_info.index(pinfo) + 1
+                        info = f"{index}. {pinfo.get("name")}"
                         print(info)
                     print("0. 退出")
                     print("=" * 50)
@@ -191,6 +196,8 @@ class NCMDownloader:
 
     def filter_exist_tracks(self, list_dir, list_info, dir_not_exist):
         """过滤列表中已存在的歌曲"""
+        filtered_list = list_info
+        exist_ids = []
         if not dir_not_exist:
             exist_ids = self.utils.exract_dir_ids(list_dir)
             exist_ids = set(exist_ids)
@@ -199,7 +206,7 @@ class NCMDownloader:
             ]
             if exist_ids:
                 print(f"已下载 {len(exist_ids)} 首歌曲, 正在下载剩余 {len(filtered_list)} 首歌曲...")
-        return filtered_list
+        return {'filtered_list': filtered_list, 'exist_len': len(exist_ids)}
 
 
     def show_info(self):

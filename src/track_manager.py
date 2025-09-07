@@ -19,6 +19,7 @@ class TrackManager:
             detail_res = self._get_track_detail(track_id)
 
         # 判断是否为VIP歌曲并获取歌曲音频信息
+        
         if detail_res.get('songs')[0]['fee'] == 1 and enable_api:
             print(f"[bold] {track_id} 为vip歌曲, 使用落月api下载...[/bold]")
             audio_res = self._get_vip_track_audio(track_id)
@@ -82,14 +83,14 @@ class TrackManager:
         results = apis.cloudsearch.GetSearchResult(keyword, limit=self.utils.config['search']['limit'])['result']['songs']
         print("\n" + "=" * 50)
         for result in results:
-            order = results.index(result) + 1
+            index = results.index(result) + 1
             if result.get('tns'):
                 name_str = f"{result.get('name', "未知歌曲")} ({result.get('tns')[0]})"
             else:
                 name_str = result.get('name', "未知歌曲")
             artists = [ar['name'] for ar in result.get('ar', [])]
             artist_str = '/'.join(artists) if artists else '未知艺术家'
-            info = f"{order}. {name_str} - {artist_str}"
+            info = f"{index}. {name_str} - {artist_str}"
             print(info)
         print("0. 退出搜索")
         print("=" * 50)
