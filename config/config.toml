@@ -30,3 +30,7 @@ translated_name = true # 是否在歌曲标题中添加译名
 enable = true # 是否下载歌词
 translation = true # 是否下载翻译歌词
 romaji = false #是否下载罗马音歌词(默认关闭)
+
+# 搜索配置
+[search]
+limit = 10 # 最大搜索数量
