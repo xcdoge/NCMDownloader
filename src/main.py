@@ -87,7 +87,10 @@ class NCMDownloader:
                 list_dir = os.path.join(self.utils.config['path']['download_dir'], f"{file_type}s", list['name'])
                 dir_not_exist = self.utils.create_directory(list_dir)
                 filter_exist_tracks = self.filter_exist_tracks(list_dir, list['song_ids'], dir_not_exist)
-                original_list = list['song_ids'][:]
+                if self.utils.config['download']['reverse_list']:
+                    original_list = list['song_ids'][::-1]
+                else:
+                    original_list = list['song_ids'][:]
                 list['song_ids'] = filter_exist_tracks['filtered_list']
                 exist_len = filter_exist_tracks['exist_len']
 

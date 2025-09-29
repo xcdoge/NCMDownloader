@@ -19,7 +19,6 @@ class TrackManager:
             detail_res = self._get_track_detail(track_id)
 
         # 判断是否为VIP歌曲并获取歌曲音频信息
-        
         if detail_res.get('songs')[0]['fee'] == 1 and enable_api:
             print(f"[bold] {track_id} 为vip歌曲, 使用落月api下载...[/bold]")
             audio_res = self._get_vip_track_audio(track_id)

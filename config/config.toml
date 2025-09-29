@@ -20,6 +20,7 @@ delay = 0.1
 # 下载相关配置
 [download]
 request_delay = 0.1 # 相邻两次请求间隔
+reverse_list = true # 是否反转列表
 
 # 歌曲详情
 [track]
