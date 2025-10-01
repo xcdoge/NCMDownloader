@@ -76,15 +76,14 @@ class DownloadManager:
         # 创建封面目录
         cover_dir = self.utils.config['path']['cover_dir']
         if self.utils.create_directory(cover_dir):
-            return False
+            pass
 
         # 下载封面
         cover_ext = track_info['cover_url'].split('.')[-1].split('?')[0].lower()
         if cover_ext not in ['jpg', 'jpeg', 'png']:
             cover_ext = 'jpg'
 
-        file_name = f"{track_info['album']}.{cover_ext}"
+        file_name = f"{track_info['album'] if track_info['album'] else track_info['name']}.{cover_ext}"
         file_path = os.path.join(cover_dir, file_name)
-
         return self.download_file(track_info['cover_url'], file_path)
 

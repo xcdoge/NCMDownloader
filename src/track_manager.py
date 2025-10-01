@@ -79,37 +79,38 @@ class TrackManager:
     def search_track(self):
         """搜索歌曲并返回歌曲信息"""
         keyword = input("搜索歌曲或歌手名称:\n")
-        results = apis.cloudsearch.GetSearchResult(keyword, limit=self.utils.config['search']['limit'])['result']['songs']
-        print("\n" + "=" * 50)
-        for result in results:
-            index = results.index(result) + 1
-            if result.get('tns'):
-                name_str = f"{result.get('name', "未知歌曲")} ({result.get('tns')[0]})"
-            else:
-                name_str = result.get('name', "未知歌曲")
-            artists = [ar['name'] for ar in result.get('ar', [])]
-            artist_str = '/'.join(artists) if artists else '未知艺术家'
-            info = f"{index}. {name_str} - {artist_str}"
-            print(info)
-        print("0. 退出搜索")
-        print("=" * 50)
-        print("\n请选择:")
-        while True:
-            choice = input()
-            try:
-                choice = int(choice)
-            except Exception:
-                print("[bold]请输入正确的数字! [/bold]")
-            else:
-                if choice <= self.utils.config['search']['limit'] and choice >= 1:
-                    res = results[choice - 1]
-                    return {
-                    'songs': [res]
-                    }
-                elif choice == 0:
-                    return
+        if keyword:
+            results = apis.cloudsearch.GetSearchResult(keyword, limit=self.utils.config['search']['limit'])['result']['songs']
+            print("\n" + "=" * 50)
+            for result in results:
+                index = results.index(result) + 1
+                if result.get('tns'):
+                    name_str = f"{result.get('name', "未知歌曲")} ({result.get('tns')[0]})"
                 else:
+                    name_str = result.get('name', "未知歌曲")
+                artists = [ar['name'] for ar in result.get('ar', [])]
+                artist_str = '/'.join(artists) if artists else '未知艺术家'
+                info = f"{index}. {name_str} - {artist_str}"
+                print(info)
+            print("0. 退出搜索")
+            print("=" * 50)
+            print("\n请选择:")
+            while True:
+                choice = input()
+                try:
+                    choice = int(choice)
+                except Exception:
                     print("[bold]请输入正确的数字! [/bold]")
+                else:
+                    if choice <= self.utils.config['search']['limit'] and choice >= 1:
+                        res = results[choice - 1]
+                        return {
+                        'songs': [res]
+                        }
+                    elif choice == 0:
+                        return
+                    else:
+                        print("[bold]请输入正确的数字! [/bold]")
 
     def _process_track_tags(self, song_detail, track_id):
         """处理歌曲标签"""

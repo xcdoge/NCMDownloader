@@ -15,6 +15,8 @@ class TagManager:
         """获取有效的封面路径（优先查找jpg、jpeg、png格式）"""
         cover_dir = self.utils.config['path']['cover_dir']
         album_name = self.tags.get('album')
+        if not album_name:
+            album_name = self.tags.get('title')
         if not album_name or not os.path.exists(cover_dir):
             return None
 
